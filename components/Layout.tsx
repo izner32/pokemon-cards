@@ -10,7 +10,7 @@ function Layout({children}) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
-                {children}
+                {children} {/* children means anything you put inside this function component */}
             </div>
 
         </div>

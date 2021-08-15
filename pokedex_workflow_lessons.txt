@@ -46,7 +46,10 @@ step 3: go back to index.js - page where the spa lives
             )
         }
 
-        // this export would determine if a page would be statically rendered or server side rendered 
+
+        // this function runs before the component above gets rendered, and its return value is automaticalyl getting passed as a props in component above 
+        // fetching data before build time, if we were to input fetching inside the home, it would fetch data everytime that function component renders 
+        // this export would determine if a page would be statically rendered or server side rendered - this function runs as our component is rendered 
         export async function getStaticProps(context){ // since we used getStaticProps, this should be a static page everything that this have would be run at the build time thus it can't have dynamic part
             try {
                 // results is an object that returns an array from the pokeapi 
