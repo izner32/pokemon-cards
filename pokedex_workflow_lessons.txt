@@ -1,0 +1,72 @@
+step 1: setup nextjs,bootstrap,ts app -> remove api pages since we won't be using backend here 
+step 2: create components folder 
+    2.1: inside create Layout.js - wrap the page with layout
+        import React from 'react'
+        import Head from "next/head"; // importing head, equivalent of head tag in html 
+
+
+        function Layout({ title, children }) {
+            return (
+                <div>
+                    <Head>
+                        <title>{title}</title>
+                        <link rel="icon" href="/favicon.ico"/>
+                    </Head>
+                </div>
+                <div>
+                    {children}
+                </div>
+            )
+        }
+
+        export default Layout
+
+step 3: go back to index.js - page where the spa lives   
+        import React from 'react'
+        import Link from "next/Link"
+        import axios from "axios";
+
+        export function Home({ pokemon }) { 
+            console.log(pokemon);
+            return (
+                <Layout title="Pokedex">
+                    <h1>Pokedex</h1>
+                    <ul>
+                        {pokemon.map(pokemon, index) => (
+                            <li key={index}></li>
+                                <Link href={`/pokemon?id=${index+1}`}> {/* link are like anchor but for react */}
+                                    <a> {/* you could surround an inline another inline element */}
+                                        <img src={pokemon.image} alt={pokemon.name}/>
+                                        <span>{index + 1} </span>
+                                        {pokemon.name}
+                                    </a>       
+                                </Link>
+                        )
+                </Layout>
+            )
+        }
+
+        // this export would determine if a page would be statically rendered or server side rendered 
+        export async function getStaticProps(context){ // since we used getStaticProps, this should be a static page everything that this have would be run at the build time thus it can't have dynamic part
+            try {
+                // results is an object that returns an array from the pokeapi 
+                const { results } = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=150"); // axios automatically parse json into javascript objects 
+                const pokemon = results.map((result, index) => {
+                    const paddedIndex = ("00" + (index + 1).slice(-3)); // images are 001,002,... in pokeapi so we have to do this to adapt unto it | slice a copy of whatever range we want 
+                    const image = `assets.pokemon.com/assets/cms2/img/pokedex/full/${paddedIndex}.png`;
+                
+                    return {
+                        ...result, // passign the content of results object one by one using the spread operator
+                        image,
+                    };
+                });
+                return {
+                    props: {pokemon}, // pokemon var contains the object of result and image for each pokemon 
+                }
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+step 4: style it now!
+
