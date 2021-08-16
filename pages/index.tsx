@@ -8,18 +8,20 @@ export default function Home({pokemonData}) { // function below is implicitly be
   	console.log('this works1');
 	return (
       	<Layout>
+			<h5 className="p-3 bg-dark text-light text-center">I know the images are wrong, but ...</h5>
 			<h1 className="text-center">Pokedex</h1>
-			<div className ="col-lg-3 col-md-4 col-sm-6">
-			{pokemonData.map( (x,index) => (
-				<>
-				{console.log(x.img)}
-				<li className= "list-unstyled" key={index}></li>
-					<div className="card d-flex justify-content-center align-items-center">
-						<img className="" src={x.img} alt={x.name} width={42} height={42}/>
-						<p>{x.name}</p>
-						<span>{index+1}</span>
-					</div>
-				</>
+			<div className ="container">
+				{pokemonData.map( (x,index) => (
+					<>
+						{console.log(x.img)}
+						<li className= "container list-unstyled" key={index}>
+							<div className="card d-flex mb-3 justify-content-center align-items-center col-12 col-sm-6 col-md-4 col-lg-3 float-start">
+								<img className="" src={x.img} alt={x.name} width={42} height={42}/>
+								<p>{x.name}</p>
+								<span>{index+1}</span>
+							</div>
+						</li>
+					</>
 				))}
 			</div>
       	</Layout>
